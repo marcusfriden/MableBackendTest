@@ -70,4 +70,14 @@ class CsvTransactionParserTest {
             parser.parse()
         }
     }
+
+    @Test
+    fun `throws on invalid amount`() {
+        val parser = CsvTransactionParser { StringReader("1111234522226789,1212343433335665,xyz") }
+
+        val exception = assertFailsWith<IllegalArgumentException> {
+            parser.parse()
+        }
+        assertTrue(exception.message!!.contains("xyz"))
+    }
 }

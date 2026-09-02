@@ -1,6 +1,5 @@
 import java.io.BufferedReader
 import java.io.Reader
-import java.math.BigDecimal
 
 class CsvAccountRepository(private val source: () -> Reader) : AccountRepository {
 
@@ -18,7 +17,8 @@ class CsvAccountRepository(private val source: () -> Reader) : AccountRepository
             "Invalid account line: expected 2 fields, got ${parts.size} in '$line'"
         }
         val accountNumber = AccountNumber(parts[0].trim())
-        val balance = BigDecimal(parts[1].trim())
+        val balance = parts[1].trim().toBigDecimalOrNull()
+            ?: throw IllegalArgumentException("Invalid balance '${parts[1].trim()}' in '$line'")
         return Account(accountNumber, balance)
     }
 }

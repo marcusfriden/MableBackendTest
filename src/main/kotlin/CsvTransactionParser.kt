@@ -1,6 +1,5 @@
 import java.io.BufferedReader
 import java.io.Reader
-import java.math.BigDecimal
 
 class CsvTransactionParser(private val source: () -> Reader) : TransactionParser {
 
@@ -20,7 +19,8 @@ class CsvTransactionParser(private val source: () -> Reader) : TransactionParser
         return Transaction(
             from = AccountNumber(parts[0].trim()),
             to = AccountNumber(parts[1].trim()),
-            amount = BigDecimal(parts[2].trim())
+            amount = parts[2].trim().toBigDecimalOrNull()
+                ?: throw IllegalArgumentException("Invalid amount '${parts[2].trim()}' in '$line'")
         )
     }
 }

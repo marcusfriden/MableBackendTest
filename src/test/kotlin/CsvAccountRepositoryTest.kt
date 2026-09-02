@@ -79,4 +79,14 @@ class CsvAccountRepositoryTest {
             repository.loadAccounts()
         }
     }
+
+    @Test
+    fun `throws on invalid balance`() {
+        val repository = CsvAccountRepository { StringReader("1111234522226789,abc") }
+
+        val exception = assertFailsWith<IllegalArgumentException> {
+            repository.loadAccounts()
+        }
+        assertTrue(exception.message!!.contains("abc"))
+    }
 }

@@ -1,3 +1,5 @@
+import core.csv.CsvLineParser
+
 class TransactionLineParser : CsvLineParser<Transaction> {
 
     override fun parse(line: String): Transaction {

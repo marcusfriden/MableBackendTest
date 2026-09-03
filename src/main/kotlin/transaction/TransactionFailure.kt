@@ -10,6 +10,9 @@ sealed class TransactionFailure(val transaction: Transaction) {
     class InsufficientFunds(transaction: Transaction) : TransactionFailure(transaction)
 }
 
+/**
+ * Helper function that prints each failure in a list if it is not empty.
+ */
 fun List<TransactionFailure>.printIfNotEmpty() {
     if (isNotEmpty()) {
         println()

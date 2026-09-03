@@ -2,6 +2,9 @@ package transaction
 
 import account.Account
 
+/**
+ * A functional interface used to create transaction validation rules
+ */
 fun interface TransactionValidation {
     fun validate(sender: Account?, receiver: Account?, transaction: Transaction): TransactionFailure?
 }

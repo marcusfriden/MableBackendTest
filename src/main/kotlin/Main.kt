@@ -1,7 +1,6 @@
 import account.AccountLineParser
 import account.InMemoryAccountRepository
 import core.csv.CsvReader
-import transaction.TransactionFailure
 import transaction.TransactionLineParser
 import transaction.TransactionService
 import transaction.printIfNotEmpty

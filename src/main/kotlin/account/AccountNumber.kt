@@ -1,3 +1,5 @@
+package account
+
 @JvmInline
 value class AccountNumber(val value: String) {
     init {

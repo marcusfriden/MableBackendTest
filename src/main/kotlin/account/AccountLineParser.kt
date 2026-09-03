@@ -1,3 +1,5 @@
+package account
+
 import core.csv.CsvLineParser
 
 class AccountLineParser : CsvLineParser<Account> {

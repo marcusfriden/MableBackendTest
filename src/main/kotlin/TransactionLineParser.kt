@@ -1,3 +1,4 @@
+import account.AccountNumber
 import core.csv.CsvLineParser
 
 class TransactionLineParser : CsvLineParser<Transaction> {

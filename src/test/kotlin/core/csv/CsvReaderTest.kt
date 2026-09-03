@@ -1,5 +1,5 @@
-import core.csv.CsvLineParser
-import core.csv.CsvReader
+package core.csv
+
 import java.io.StringReader
 import kotlin.test.Test
 import kotlin.test.assertEquals

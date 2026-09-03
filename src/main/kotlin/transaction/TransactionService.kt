@@ -1,35 +1,28 @@
 package transaction
 
-import account.Account
-import account.AccountNumber
 import account.AccountRepository
 
 class TransactionService(private val accountRepository: AccountRepository) {
 
     private val validations = listOf(
-        TransactionValidation { sender, _, transaction ->
-            if (sender.balance < transaction.amount) TransactionFailure.InsufficientFunds(transaction) else null
-        }
+        validateSenderAccountExists,
+        validateReceiverAccountExists,
+        validateSufficientFunds
     )
 
     fun process(transactions: List<Transaction>): TransactionResult =
         transactions.fold(TransactionResult(accountRepository.loadAccounts(), emptyList())) { result, transaction ->
-            val sender = requireAccount(result.accounts, transaction.from)
-            val receiver = requireAccount(result.accounts, transaction.to)
+            val sender = result.accounts[transaction.from]
+            val receiver = result.accounts[transaction.to]
             val failure = validations.firstNotNullOfOrNull { it.validate(sender, receiver, transaction) }
-
             if (failure != null) {
                 result.copy(failures = result.failures + failure)
             } else {
                 result.copy(
                     accounts = result.accounts
-                        .plus(transaction.from to sender.copy(balance = sender.balance - transaction.amount))
-                        .plus(transaction.to to receiver.copy(balance = receiver.balance + transaction.amount))
+                        .plus(transaction.from to sender!!.copy(balance = sender.balance - transaction.amount))
+                        .plus(transaction.to to receiver!!.copy(balance = receiver.balance + transaction.amount))
                 )
             }
         }
-
-    private fun requireAccount(accounts: Map<AccountNumber, Account>, accountNumber: AccountNumber): Account =
-        accounts[accountNumber]
-            ?: throw IllegalArgumentException("Account not found: ${accountNumber.value}")
 }

@@ -68,6 +68,50 @@ class MainTest {
     }
 
     @Test
+    fun `prints failure when sender account not found`() {
+        val balancesFile = createTempFile(
+            "1212343433335665,1200.00\n"
+        )
+        val transactionsFile = createTempFile(
+            "9999999999999999,1212343433335665,500.00\n"
+        )
+
+        val output = captureOutput {
+            main(arrayOf(balancesFile.path, transactionsFile.path))
+        }
+
+        assertEquals("""
+            Updated Account Balances:
+              1212343433335665: 1200.00
+
+            Failed Transactions:
+              SenderAccountNotFound: 9999999999999999 -> 1212343433335665, amount: 500.00
+        """.trimIndent(), output)
+    }
+
+    @Test
+    fun `prints failure when receiver account not found`() {
+        val balancesFile = createTempFile(
+            "1111234522226789,5000.00\n"
+        )
+        val transactionsFile = createTempFile(
+            "1111234522226789,9999999999999999,500.00\n"
+        )
+
+        val output = captureOutput {
+            main(arrayOf(balancesFile.path, transactionsFile.path))
+        }
+
+        assertEquals("""
+            Updated Account Balances:
+              1111234522226789: 5000.00
+
+            Failed Transactions:
+              ReceiverAccountNotFound: 1111234522226789 -> 9999999999999999, amount: 500.00
+        """.trimIndent(), output)
+    }
+
+    @Test
     fun `processes example data from spec correctly`() {
         val balancesFile = createTempFile(
             """

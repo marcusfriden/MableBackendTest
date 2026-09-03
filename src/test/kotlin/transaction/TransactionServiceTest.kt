@@ -116,28 +116,30 @@ class TransactionServiceTest {
     }
 
     @Test
-    fun `throws when sender account not found`() {
+    fun `reports failure when sender account not found`() {
         val service = serviceWith("1212343433335665" to "1200.00")
         val transactions = listOf(
             Transaction(AccountNumber("9999999999999999"), AccountNumber("1212343433335665"), BigDecimal("500.00"))
         )
 
-        val exception = assertFailsWith<IllegalArgumentException> {
-            service.process(transactions)
-        }
-        assertTrue(exception.message!!.contains("9999999999999999"))
+        val result = service.process(transactions)
+
+        assertEquals(1, result.failures.size)
+        assertTrue(result.failures[0] is TransactionFailure.SenderAccountNotFound)
+        assertEquals(BigDecimal("1200.00"), result.accounts[AccountNumber("1212343433335665")]?.balance)
     }
 
     @Test
-    fun `throws when receiver account not found`() {
+    fun `reports failure when receiver account not found`() {
         val service = serviceWith("1111234522226789" to "5000.00")
         val transactions = listOf(
             Transaction(AccountNumber("1111234522226789"), AccountNumber("9999999999999999"), BigDecimal("500.00"))
         )
 
-        val exception = assertFailsWith<IllegalArgumentException> {
-            service.process(transactions)
-        }
-        assertTrue(exception.message!!.contains("9999999999999999"))
+        val result = service.process(transactions)
+
+        assertEquals(1, result.failures.size)
+        assertTrue(result.failures[0] is TransactionFailure.ReceiverAccountNotFound)
+        assertEquals(BigDecimal("5000.00"), result.accounts[AccountNumber("1111234522226789")]?.balance)
     }
 }

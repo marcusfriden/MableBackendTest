@@ -1,6 +1,9 @@
 import account.AccountLineParser
 import account.InMemoryAccountRepository
 import core.csv.CsvReader
+import transaction.TransactionFailure
+import transaction.TransactionLineParser
+import transaction.TransactionService
 import java.io.File
 
 fun main(args: Array<String>) {

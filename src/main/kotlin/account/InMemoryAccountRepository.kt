@@ -2,5 +2,5 @@ package account
 
 class InMemoryAccountRepository(private val accounts: Map<AccountNumber, Account>) : AccountRepository {
 
-    override fun loadAccounts(): Map<AccountNumber, Account> = accounts
+    override fun loadAll(): Map<AccountNumber, Account> = accounts
 }

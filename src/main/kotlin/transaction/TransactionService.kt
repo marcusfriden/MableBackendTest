@@ -11,7 +11,7 @@ class TransactionService(private val accountRepository: AccountRepository) {
     )
 
     fun process(transactions: List<Transaction>): TransactionResult =
-        transactions.fold(TransactionResult(accountRepository.loadAccounts(), emptyList())) { result, transaction ->
+        transactions.fold(TransactionResult(accountRepository.loadAll(), emptyList())) { result, transaction ->
             val sender = result.accounts[transaction.from]
             val receiver = result.accounts[transaction.to]
             val failure = validations.firstNotNullOfOrNull { it.validate(sender, receiver, transaction) }

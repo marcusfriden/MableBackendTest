@@ -13,7 +13,7 @@ class InMemoryAccountRepositoryTest {
         val account = Account(accountNumber, BigDecimal("5000.00"))
         val repository = InMemoryAccountRepository(mapOf(accountNumber to account))
 
-        val accounts = repository.loadAccounts()
+        val accounts = repository.loadAll()
 
         assertEquals(1, accounts.size)
         assertEquals(BigDecimal("5000.00"), accounts[accountNumber]?.balance)
@@ -23,6 +23,6 @@ class InMemoryAccountRepositoryTest {
     fun `returns empty map when created with no accounts`() {
         val repository = InMemoryAccountRepository(emptyMap())
 
-        assertTrue(repository.loadAccounts().isEmpty())
+        assertTrue(repository.loadAll().isEmpty())
     }
 }

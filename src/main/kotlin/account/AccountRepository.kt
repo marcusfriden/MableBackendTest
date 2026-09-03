@@ -1,5 +1,5 @@
 package account
 
 interface AccountRepository {
-    fun loadAccounts(): Map<AccountNumber, Account>
+    fun loadAll(): Map<AccountNumber, Account>
 }

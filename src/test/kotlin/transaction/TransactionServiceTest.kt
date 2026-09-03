@@ -19,7 +19,7 @@ class TransactionServiceTest {
 
     private fun serviceWith(vararg pairs: Pair<String, String>): TransactionService =
         TransactionService(object : AccountRepository {
-            override fun loadAccounts() = accounts(*pairs)
+            override fun loadAll() = accounts(*pairs)
         })
 
     @Test

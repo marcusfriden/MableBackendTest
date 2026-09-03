@@ -3,7 +3,6 @@ import java.io.File
 import java.io.PrintStream
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 class MainTest {
 
@@ -38,10 +37,11 @@ class MainTest {
             main(arrayOf(balancesFile.path, transactionsFile.path))
         }
 
-        assertTrue(output.contains("1111234522226789"))
-        assertTrue(output.contains("4500.00"))
-        assertTrue(output.contains("1212343433335665"))
-        assertTrue(output.contains("1700.00"))
+        assertEquals("""
+            Updated Account Balances:
+              1111234522226789: 4500.00
+              1212343433335665: 1700.00
+        """.trimIndent(), output)
     }
 
     @Test
@@ -57,11 +57,14 @@ class MainTest {
             main(arrayOf(balancesFile.path, transactionsFile.path))
         }
 
-        assertTrue(output.contains("1111234522226789"))
-        assertTrue(output.contains("100.00"))
-        assertTrue(output.contains("1212343433335665"))
-        assertTrue(output.contains("1200.00"))
-        assertTrue(output.contains("InsufficientFunds"))
+        assertEquals("""
+            Updated Account Balances:
+              1111234522226789: 100.00
+              1212343433335665: 1200.00
+
+            Failed Transactions:
+              InsufficientFunds: 1111234522226789 -> 1212343433335665, amount: 500.00
+        """.trimIndent(), output)
     }
 
     @Test
@@ -88,10 +91,13 @@ class MainTest {
             main(arrayOf(balancesFile.path, transactionsFile.path))
         }
 
-        assertTrue(output.contains("4820.50"))
-        assertTrue(output.contains("9974.40"))
-        assertTrue(output.contains("1550.00"))
-        assertTrue(output.contains("1725.60"))
-        assertTrue(output.contains("48679.50"))
+        assertEquals("""
+            Updated Account Balances:
+              1111234522226789: 4820.50
+              1111234522221234: 9974.40
+              2222123433331212: 1550.00
+              1212343433335665: 1725.60
+              3212343433335755: 48679.50
+        """.trimIndent(), output)
     }
 }

@@ -1,7 +1,7 @@
 import java.io.File
 
 fun main(args: Array<String>) {
-    require(args.size == 2) { "Usage: mable-banking <balances.csv> <transactions.csv>" }
+    require(args.size == 2) { "Usage: java -jar <application.jar> <balances.csv> <transactions.csv>" }
 
     val accountRepository = CsvAccountRepository { File(args[0]).reader() }
     val transactionParser = CsvTransactionParser { File(args[1]).reader() }
@@ -10,7 +10,7 @@ fun main(args: Array<String>) {
     val transactions = transactionParser.parse()
     val result = transactionService.process(transactions)
 
-    println("Account Balances:")
+    println("Updated Account Balances:")
     result.accounts.forEach { (accountNumber, account) ->
         println("  ${accountNumber.value}: ${account.balance}")
     }

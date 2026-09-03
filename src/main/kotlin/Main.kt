@@ -3,11 +3,13 @@ import java.io.File
 fun main(args: Array<String>) {
     require(args.size == 2) { "Usage: java -jar <application.jar> <balances.csv> <transactions.csv>" }
 
-    val accountRepository = CsvAccountRepository { File(args[0]).reader() }
-    val transactionParser = CsvTransactionParser { File(args[1]).reader() }
+    val accounts = CsvReader({ File(args[0]).reader() }, AccountLineParser())
+        .readAll()
+        .associateBy { it.accountNumber }
+    val accountRepository = InMemoryAccountRepository(accounts)
     val transactionService = TransactionService(accountRepository)
 
-    val transactions = transactionParser.parse()
+    val transactions = CsvReader({ File(args[1]).reader() }, TransactionLineParser()).readAll()
     val result = transactionService.process(transactions)
 
     println("Updated Account Balances:")

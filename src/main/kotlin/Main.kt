@@ -18,8 +18,9 @@ fun main(args: Array<String>) {
 
         val transactions = CsvReader({ File(args[1]).reader() }, TransactionLineParser()).readAll()
         val result = transactionService.process(transactions)
+        println("Processed ${transactions.size - result.failures.size}/${transactions.size} transactions\n")
 
-        println("Updated Account Balances:")
+        println("Account Balances:")
         result.accounts.forEach { (accountNumber, account) ->
             println("  ${accountNumber.value}: ${account.balance}")
         }

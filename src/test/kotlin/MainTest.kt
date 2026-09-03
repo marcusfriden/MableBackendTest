@@ -38,7 +38,9 @@ class MainTest {
         }
 
         assertEquals("""
-            Updated Account Balances:
+            Processed 1/1 transactions
+            
+            Account Balances:
               1111234522226789: 4500.00
               1212343433335665: 1700.00
         """.trimIndent(), output)
@@ -58,7 +60,9 @@ class MainTest {
         }
 
         assertEquals("""
-            Updated Account Balances:
+            Processed 0/1 transactions
+            
+            Account Balances:
               1111234522226789: 100.00
               1212343433335665: 1200.00
 
@@ -81,7 +85,9 @@ class MainTest {
         }
 
         assertEquals("""
-            Updated Account Balances:
+            Processed 0/1 transactions
+            
+            Account Balances:
               1212343433335665: 1200.00
 
             Failed Transactions:
@@ -103,7 +109,9 @@ class MainTest {
         }
 
         assertEquals("""
-            Updated Account Balances:
+            Processed 0/1 transactions
+            
+            Account Balances:
               1111234522226789: 5000.00
 
             Failed Transactions:
@@ -136,7 +144,9 @@ class MainTest {
         }
 
         assertEquals("""
-            Updated Account Balances:
+            Processed 4/4 transactions
+            
+            Account Balances:
               1111234522226789: 4820.50
               1111234522221234: 9974.40
               2222123433331212: 1550.00

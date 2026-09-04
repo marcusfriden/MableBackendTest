@@ -16,6 +16,32 @@ When implementing this solution I have made some assumptions and judgment calls 
 * I wanted to focus on building an extensible program with good structure and solid test coverage. For that reason I 
   decided to keep it simple and just pass the files in as arguments to the program which then runs the transactions 
   ones and prints the result.
+* I have not added validations for every failure case, there are plenty of bad bugs with the right 
+  transaction file (for example negative amounts or same sender and receiver). My goal was to build a 
+  framework where adding more validations would be easy, not to cover every case. 
+
+Project package structure:
+
+```
+src/main/kotlin/
+├── Main.kt                              # Application entry point, wires dependencies and prints results
+├── account/
+│   ├── Account.kt                       # Immutable data class representing a bank account
+│   ├── AccountLineParser.kt             # Parses a CSV line into an Account
+│   ├── AccountNumber.kt                 # Value class with 16-digit validation
+│   ├── AccountRepository.kt             # Interface for loading accounts
+│   └── InMemoryAccountRepository.kt     # Map-backed AccountRepository implementation
+├── core/csv/
+│   ├── CsvLineParser.kt                 # Functional interface for parsing a single CSV line into a type
+│   └── CsvReader.kt                     # Generic CSV reader that combines a source with a line parser
+└── transaction/
+    ├── Transaction.kt                   # Immutable data class representing a transfer between accounts
+    ├── TransactionFailure.kt            # Sealed class of failure reasons (e.g. InsufficientFunds)
+    ├── TransactionLineParser.kt         # Parses a CSV line into a Transaction
+    ├── TransactionResult.kt             # Data class containing updated accounts and any failures
+    ├── TransactionService.kt            # Processes transactions against accounts with validation
+    └── TransactionValidation.kt         # Functional interface for validation rules and their implementations
+```
 
 Here are some instructions on how to build and run the project:
 
